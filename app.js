@@ -24,7 +24,7 @@ const totalPriceEl = document.getElementById('total-price');
 const orderForm = document.getElementById('order-form');
 
 // Configuration
-const API_URL = 'https://script.google.com/macros/s/AKfycbx7hfgjMYZn5L5q1DpHfJOZVQQAla7ngPe8qtFtWJNGWTOhAkV7p2Av-VYvwP86IJ3v/exec'
+const API_URL = 'https://script.google.com/macros/s/AKfycbx_SDfn6fMx7zHkqnFWMp4_PICoRVADLSRnRDjwj-F5tBNEgIB55Fb7GYZU128MGDuw/exec'
 const USE_MOCK_DATA = false; // Set to false to use the real API
 
 // Initialize
@@ -92,8 +92,7 @@ function renderMenu() {
         const imageUrl = getImageUrl(item.image);
         return `
         <div class="menu-item ${outOfStock ? 'out-of-stock' : ''}">
-            <div class="item-image">
-                <img src="${imageUrl}" alt="${item.name}" onerror="this.src='https://placehold.co/300x200?text=No+Image'" loading="lazy">
+            <div class="item-image" style="background-image: url('${imageUrl}')">
             </div>
             <div class="item-content">
                 <h3>${item.name}</h3>
@@ -110,35 +109,17 @@ function renderMenu() {
 }
 
 function getImageUrl(url) {
-    if (!url) return 'https://placehold.co/300x200?text=No+Image';
+    if (!url) return 'https://placehold.co/150?text=No+Image';
 
     // Handle Google Drive "View" links
-    // Convert https://drive.google.com/file/d/ID/view... to direct image URL
-    if (url.includes('drive.google.com')) {
-        // Extract file ID from various Google Drive URL formats
-        let fileId = null;
-
-        // Format: /file/d/ID/view
-        const viewMatch = url.match(/\/file\/d\/([^\/]+)/);
-        if (viewMatch && viewMatch[1]) {
-            fileId = viewMatch[1];
-        }
-
-        // Format: /open?id=ID or ?id=ID
-        if (!fileId) {
-            const idMatch = url.match(/[?&]id=([^&]+)/);
-            if (idMatch && idMatch[1]) {
-                fileId = idMatch[1];
-            }
-        }
-
-        if (fileId) {
-            // Use the uc?export=view endpoint which works better on mobile
-            // Also add &sz=w800 for thumbnail size optimization
-            return `https://drive.google.com/uc?export=view&id=${fileId}`;
+    // Convert https://drive.google.com/file/d/ID/view... to https://drive.google.com/uc?export=view&id=ID
+    if (url.includes('drive.google.com') && url.includes('/view')) {
+        const idMatch = url.match(/\/d\/(.*?)\//);
+        if (idMatch && idMatch[1]) {
+            // Use thumbnail endpoint for better embedding reliability (avoiding 403s)
+            return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w800`;
         }
     }
-
     return url;
 }
 
