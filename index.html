@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הקפיטריה של כיתה ו</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <h1>הקפיטריה של כיתה ו</h1>
+            <button id="cart-btn">עגלה <span id="cart-count">0</span></button>
+        </header>
+
+        <main>
+            <!-- Category Filters -->
+            <div id="category-filters" class="filters">
+                <button class="filter-btn active" data-category="all">הכל</button>
+                <button class="filter-btn" data-category="מאפים">מאפים</button>
+                <button class="filter-btn" data-category="שתייה">שתייה</button>
+                <button class="filter-btn" data-category="ירקות">ירקות</button>
+                <button class="filter-btn" data-category="תוספות">תוספות</button>
+            </div>
+
+            <div id="menu-container" class="grid-container">
+                <!-- Menu items will be injected here -->
+                <div class="loading">טוען תפריט...</div>
+            </div>
+        </main>
+
+        <!-- Cart Modal -->
+        <div id="cart-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>סיכום הזמנה</h2>
+                <div id="cart-items"></div>
+                <div class="cart-total">סה"כ לתשלום: ₪<span id="total-price">0</span></div>
+
+                <form id="order-form">
+                    <div class="form-group">
+                        <label for="name">שם פרטי:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname">שם משפחה:</label>
+                        <input type="text" id="lastname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="class-num">כיתה:</label>
+                        <input type="text" id="class-num" required>
+                    </div>
+
+                    <h3>אמצעי תשלום</h3>
+                    <div class="payment-options">
+                        <label>
+                            <input type="radio" name="payment" value="bit" required>
+                            Bit
+                        </label>
+                        <label>
+                            <input type="radio" name="payment" value="cash" required>
+                            מזומן
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">בצע הזמנה</button>
+                </form>
+            </div>
+        </div>
+        <!-- Admin Modal -->
+        <div id="admin-modal" class="modal hidden">
+            <div class="modal-content admin-content">
+                <span class="close-btn close-admin">&times;</span>
+                <h2>דוחות (למנהל)</h2>
+
+                <div id="admin-login">
+                    <div class="form-group">
+                        <label for="admin-password">סיסמה:</label>
+                        <input type="password" id="admin-password">
+                    </div>
+                    <button id="admin-login-btn" class="btn-primary">כניסה</button>
+                </div>
+
+                <div id="admin-dashboard" class="hidden">
+                    <div class="report-tabs">
+                        <button class="tab-btn active" data-tab="all-items">סה"כ פריטים</button>
+                        <button class="tab-btn" data-tab="per-class">לפי כיתה</button>
+                        <button class="tab-btn" data-tab="detailed">פירוט שמי</button>
+                    </div>
+
+                    <div id="report-content">
+                        <div class="loading hidden">טוען דוחות...</div>
+                        <div id="report-output"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <button id="admin-btn" class="text-btn">כניסה למנהלים</button>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
